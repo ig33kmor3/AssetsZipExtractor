@@ -1,4 +1,4 @@
-package sample;
+package AssetsApp;
 
 public class Controller {
 }
