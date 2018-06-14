@@ -4,25 +4,30 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TextArea?>
 
-<GridPane fx:controller="AssetsApp.Controller"
+<GridPane fx:controller="AssetsApp.Controller" fx:id="mainGridPane"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
 
     <!--Zip Folder Location UI-->
     <Label text="Zip Folder Location" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
     <TextField fx:id="textFieldZipFolderLocation" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
-    <Button fx:id="btnZipFolderLocation" text="Browse" GridPane.rowIndex="0" GridPane.columnIndex="4"/>
+    <Button fx:id="btnZipFolderLocation" text="Browse" GridPane.rowIndex="0" GridPane.columnIndex="4"
+            onAction="#onButtonClick"/>
 
     <!--.XML Output Location UI-->
     <Label text="XML Output Location" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
     <TextField fx:id="textFieldXMLOutputLocation" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
-    <Button fx:id="btnXMLOutputLocation" text="Browse" GridPane.rowIndex="2" GridPane.columnIndex="4"/>
+    <Button fx:id="btnXMLOutputLocation" text="Browse" GridPane.rowIndex="2" GridPane.columnIndex="4"
+            onAction="#onButtonClick"/>
 
     <!--Execute Extraction Button UI-->
-    <Button text="Start Extraction" GridPane.rowIndex="4" GridPane.columnIndex="2" GridPane.columnSpan="3"/>
+    <Button fx:id="btnStartExtraction" text="Start Extraction" GridPane.rowIndex="4" GridPane.columnIndex="2" GridPane.columnSpan="3"
+            onAction="#onButtonClick"/>
 
     <!--User Notification Area-->
     <TextArea fx:id="notificationArea" GridPane.rowIndex="7" GridPane.columnIndex="0"
               GridPane.columnSpan="5" wrapText="true" style="-fx-text-alignment: center;"/>
     <Label text="Notification Area" GridPane.rowIndex="8" GridPane.columnIndex="2"/>
+    <Button fx:id="btnClear" text="Clear" GridPane.rowIndex="10" GridPane.columnIndex="2" GridPane.halignment="CENTER"
+            onAction="#onButtonClick"/>
 
 </GridPane>
