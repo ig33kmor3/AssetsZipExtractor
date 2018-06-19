@@ -19,9 +19,9 @@ public class Controller {
     @FXML
     private Button btnZipFolderLocation;
     @FXML
-    private TextField textFieldXMLOutputLocation;
+    private TextField textFieldZipOutputLocation;
     @FXML
-    private Button btnXMLOutputLocation;
+    private Button btnZipOutputLocation;
     @FXML
     private Button btnStartExtraction;
     @FXML
@@ -32,7 +32,7 @@ public class Controller {
     @FXML
     public void initialize() {
         textFieldZipFolderLocation.setEditable(false);
-        textFieldXMLOutputLocation.setEditable(false);
+        textFieldZipOutputLocation.setEditable(false);
         notificationArea.setEditable(false);
     }
 
@@ -40,13 +40,13 @@ public class Controller {
     public void onButtonClick(ActionEvent btnClicked) {
         if (btnClicked.getSource().equals(btnZipFolderLocation)) {
             File zipFile = getZipFileDialog();
-        } else if (btnClicked.getSource().equals(btnXMLOutputLocation)) {
-            File xmlDirectory = getXMLDirectoryDialog();
+        } else if (btnClicked.getSource().equals(btnZipOutputLocation)) {
+            File zipOutputDirectory = getZipOutputDirectoryDialog();
         } else if (btnClicked.getSource().equals(btnStartExtraction)) {
             notificationArea.setText("Starting Extraction ....");
         } else if (btnClicked.getSource().equals(btnClear)) {
             textFieldZipFolderLocation.clear();
-            textFieldXMLOutputLocation.clear();
+            textFieldZipOutputLocation.clear();
             notificationArea.clear();
         }
     }
@@ -66,15 +66,15 @@ public class Controller {
         }
     }
 
-    private File getXMLDirectoryDialog(){
-        DirectoryChooser chooseXMLDirectory = new DirectoryChooser();
-        File xmlDirectory = chooseXMLDirectory.showDialog(mainGridPane.getScene().getWindow());
-        if(xmlDirectory != null){
-            textFieldXMLOutputLocation.setText(xmlDirectory.getAbsolutePath());
-            notificationArea.setText("XML Folder Selected!");
-            return xmlDirectory;
+    private File getZipOutputDirectoryDialog(){
+        DirectoryChooser chooseZipOutputDirectory = new DirectoryChooser();
+        File zipOutputDirectory = chooseZipOutputDirectory.showDialog(mainGridPane.getScene().getWindow());
+        if(zipOutputDirectory != null){
+            textFieldZipOutputLocation.setText(zipOutputDirectory.getAbsolutePath());
+            notificationArea.setText("Zip Folder Output Selected!");
+            return zipOutputDirectory;
         } else {
-            notificationArea.setText("XML Folder Not Selected!");
+            notificationArea.setText("Zip Folder Output Not Selected!");
             return null;
         }
     }

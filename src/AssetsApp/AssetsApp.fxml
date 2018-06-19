@@ -8,15 +8,15 @@
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
 
     <!--Zip Folder Location UI-->
-    <Label text="Zip Folder Location" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+    <Label text="Zip Folder Input Location" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
     <TextField fx:id="textFieldZipFolderLocation" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
     <Button fx:id="btnZipFolderLocation" text="Browse" GridPane.rowIndex="0" GridPane.columnIndex="4"
             onAction="#onButtonClick"/>
 
-    <!--.XML Output Location UI-->
-    <Label text="XML Output Location" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-    <TextField fx:id="textFieldXMLOutputLocation" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
-    <Button fx:id="btnXMLOutputLocation" text="Browse" GridPane.rowIndex="2" GridPane.columnIndex="4"
+    <!--Zip Output Location UI-->
+    <Label text="Zip Entries Output Location" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+    <TextField fx:id="textFieldZipOutputLocation" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+    <Button fx:id="btnZipOutputLocation" text="Browse" GridPane.rowIndex="2" GridPane.columnIndex="4"
             onAction="#onButtonClick"/>
 
     <!--Execute Extraction Button UI-->
