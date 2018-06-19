@@ -6,6 +6,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import java.io.File;
 
 public class Controller {
 
@@ -36,15 +39,43 @@ public class Controller {
     @FXML
     public void onButtonClick(ActionEvent btnClicked) {
         if (btnClicked.getSource().equals(btnZipFolderLocation)) {
-            notificationArea.setText("Open Zip Folder Location");
+            File zipFile = getZipFileDialog();
         } else if (btnClicked.getSource().equals(btnXMLOutputLocation)) {
-            notificationArea.setText("Set XML Output Location");
+            File xmlDirectory = getXMLDirectoryDialog();
         } else if (btnClicked.getSource().equals(btnStartExtraction)) {
             notificationArea.setText("Starting Extraction ....");
         } else if (btnClicked.getSource().equals(btnClear)) {
             textFieldZipFolderLocation.clear();
             textFieldXMLOutputLocation.clear();
             notificationArea.clear();
+        }
+    }
+
+    private File getZipFileDialog(){
+        FileChooser chooseZipFile = new FileChooser();
+        chooseZipFile.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Zip", "*.zip"));
+        File zipFile = chooseZipFile.showOpenDialog(mainGridPane.getScene().getWindow());
+        if(zipFile != null){
+            textFieldZipFolderLocation.setText(zipFile.getAbsolutePath());
+            notificationArea.setText("Zip File Selected!");
+            return zipFile;
+        } else {
+            notificationArea.setText("Zip File Not Selected!");
+            return null;
+        }
+    }
+
+    private File getXMLDirectoryDialog(){
+        DirectoryChooser chooseXMLDirectory = new DirectoryChooser();
+        File xmlDirectory = chooseXMLDirectory.showDialog(mainGridPane.getScene().getWindow());
+        if(xmlDirectory != null){
+            textFieldXMLOutputLocation.setText(xmlDirectory.getAbsolutePath());
+            notificationArea.setText("XML Folder Selected!");
+            return xmlDirectory;
+        } else {
+            notificationArea.setText("XML Folder Not Selected!");
+            return null;
         }
     }
 }
