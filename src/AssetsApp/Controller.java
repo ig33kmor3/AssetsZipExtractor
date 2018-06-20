@@ -29,6 +29,11 @@ public class Controller {
     @FXML
     private TextArea notificationArea;
 
+    private File zipFile;
+    private File zipOutputRootDirectory;
+    private File zipOutputUncompressedDirectory;
+    private File zipOutputXMLDirectory;
+
     @FXML
     public void initialize() {
         textFieldZipFolderLocation.setEditable(false);
@@ -37,13 +42,11 @@ public class Controller {
     }
 
     @FXML
-    public void onButtonClick(ActionEvent btnClicked) {
+    public void onBrowseButtonClick(ActionEvent btnClicked) {
         if (btnClicked.getSource().equals(btnZipFolderLocation)) {
-            File zipFile = getZipFileDialog();
+            this.zipFile = getZipFileDialog();
         } else if (btnClicked.getSource().equals(btnZipOutputLocation)) {
-            File zipOutputDirectory = getZipOutputDirectoryDialog();
-        } else if (btnClicked.getSource().equals(btnStartExtraction)) {
-            notificationArea.setText("Starting Extraction ....");
+            this.zipOutputRootDirectory = getZipOutputDirectoryDialog();
         } else if (btnClicked.getSource().equals(btnClear)) {
             textFieldZipFolderLocation.clear();
             textFieldZipOutputLocation.clear();
@@ -58,10 +61,10 @@ public class Controller {
         File zipFile = chooseZipFile.showOpenDialog(mainGridPane.getScene().getWindow());
         if(zipFile != null){
             textFieldZipFolderLocation.setText(zipFile.getAbsolutePath());
-            notificationArea.setText("Zip File Selected!");
+            notificationArea.setText("Zip file selected.");
             return zipFile;
         } else {
-            notificationArea.setText("Zip File Not Selected!");
+            notificationArea.setText("Zip file not selected!");
             return null;
         }
     }
@@ -71,11 +74,31 @@ public class Controller {
         File zipOutputDirectory = chooseZipOutputDirectory.showDialog(mainGridPane.getScene().getWindow());
         if(zipOutputDirectory != null){
             textFieldZipOutputLocation.setText(zipOutputDirectory.getAbsolutePath());
-            notificationArea.setText("Zip Folder Output Selected!");
+            notificationArea.setText("Zip folder selected.");
             return zipOutputDirectory;
         } else {
-            notificationArea.setText("Zip Folder Output Not Selected!");
+            notificationArea.setText("Zip folder output not selected!");
             return null;
+        }
+    }
+
+    @FXML
+    public void onStartButtonClick(){
+        if(this.zipFile != null && this.zipOutputRootDirectory != null){
+            createOutputFolderTree(this.zipOutputRootDirectory);
+        } else {
+            notificationArea.setText("Please select an input and output!");
+        }
+    }
+
+    private void createOutputFolderTree(File zipOutputDirectory){
+        notificationArea.setText("Creating initial folder tree ....");
+        this.zipOutputUncompressedDirectory = new File(zipOutputDirectory.getAbsolutePath() + File.separator + "uncompressedZip");
+        this.zipOutputXMLDirectory = new File(zipOutputDirectory.getAbsolutePath() + File.separator + "xmlOutput");
+        if(this.zipOutputUncompressedDirectory.mkdirs() && this.zipOutputXMLDirectory.mkdirs()){
+            notificationArea.setText("Finished initial folder tree creation.");
+        } else {
+            notificationArea.setText("Error creating initial folder tree.");
         }
     }
 }
