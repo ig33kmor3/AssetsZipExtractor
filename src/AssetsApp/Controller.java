@@ -74,10 +74,10 @@ public class Controller {
         File zipOutputDirectory = chooseZipOutputDirectory.showDialog(mainGridPane.getScene().getWindow());
         if(zipOutputDirectory != null){
             textFieldZipOutputLocation.setText(zipOutputDirectory.getAbsolutePath());
-            notificationArea.setText("Zip folder selected.");
+            notificationArea.setText("Zip output folder selected.");
             return zipOutputDirectory;
         } else {
-            notificationArea.setText("Zip folder output not selected!");
+            notificationArea.setText("Zip output folder not selected!");
             return null;
         }
     }
