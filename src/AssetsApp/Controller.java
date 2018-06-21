@@ -1,5 +1,7 @@
 package AssetsApp;
 
+import AssetsApp.Extraction.Extractor;
+import AssetsApp.Search.ZipFinder;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,6 +11,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
 
@@ -33,6 +37,7 @@ public class Controller {
     private File zipOutputRootDirectory;
     private File zipOutputUncompressedDirectory;
     private File zipOutputXMLDirectory;
+    private List<File> zipFileArrayList;
 
     @FXML
     public void initialize() {
@@ -86,6 +91,8 @@ public class Controller {
     public void onStartButtonClick(){
         if(this.zipFile != null && this.zipOutputRootDirectory != null){
             createOutputFolderTree(this.zipOutputRootDirectory);
+            Extractor.unZip(zipFile, zipOutputUncompressedDirectory);
+            ZipFinder.searchForZip(new File("G:\\Downloads\\testOutput\\uncompressedZip"));
         } else {
             notificationArea.setText("Please select an input and output!");
         }
