@@ -15,16 +15,22 @@ public class Extractor {
             ZipInputStream zipInput = new ZipInputStream(new FileInputStream(zipFile));
             ZipEntry zipEntry = zipInput.getNextEntry();
             while(zipEntry != null){
-                String zipName = zipEntry.getName();
+                String zipName = zipEntry.toString();
                 File newFile = new File(outputDirectory + File.separator + zipName);
                 System.out.println("File Unzip: " + newFile.getAbsolutePath());
-                new File(newFile.getParent()).mkdirs();
-                FileOutputStream fileOutput = new FileOutputStream(newFile);
-                int len;
-                while ((len = zipInput.read(buffer)) > 0){
-                    fileOutput.write(buffer, 0, len);
+                if(zipEntry.isDirectory()){
+                    File newDirectory = new File(newFile.getAbsolutePath());
+                    if(!newDirectory.exists()){
+                        newDirectory.mkdirs();
+                    }
+                } else {
+                    FileOutputStream fileOutput = new FileOutputStream(newFile);
+                    int len;
+                    while ((len = zipInput.read(buffer)) > 0){
+                        fileOutput.write(buffer, 0, len);
+                    }
+                    fileOutput.close();
                 }
-                fileOutput.close();
                 zipEntry = zipInput.getNextEntry();
             }
             zipInput.closeEntry();

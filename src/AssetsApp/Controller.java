@@ -11,7 +11,6 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
@@ -37,7 +36,7 @@ public class Controller {
     private File zipOutputRootDirectory;
     private File zipOutputUncompressedDirectory;
     private File zipOutputXMLDirectory;
-    private List<File> zipFileArrayList;
+    private List<File> listOfZipFiles;
 
     @FXML
     public void initialize() {
@@ -92,7 +91,6 @@ public class Controller {
         if(this.zipFile != null && this.zipOutputRootDirectory != null){
             createOutputFolderTree(this.zipOutputRootDirectory);
             Extractor.unZip(zipFile, zipOutputUncompressedDirectory);
-            ZipFinder.searchForZip(new File("G:\\Downloads\\testOutput\\uncompressedZip"));
         } else {
             notificationArea.setText("Please select an input and output!");
         }
@@ -102,10 +100,8 @@ public class Controller {
         notificationArea.setText("Creating initial folder tree ....");
         this.zipOutputUncompressedDirectory = new File(zipOutputDirectory.getAbsolutePath() + File.separator + "uncompressedZip");
         this.zipOutputXMLDirectory = new File(zipOutputDirectory.getAbsolutePath() + File.separator + "xmlOutput");
-        if(this.zipOutputUncompressedDirectory.mkdirs() && this.zipOutputXMLDirectory.mkdirs()){
-            notificationArea.setText("Finished initial folder tree creation.");
-        } else {
-            notificationArea.setText("Error creating initial folder tree.");
-        }
+        this.zipOutputUncompressedDirectory.mkdirs();
+        this.zipOutputXMLDirectory.mkdirs();
+        notificationArea.setText("Finished initial folder tree creation.");
     }
 }
