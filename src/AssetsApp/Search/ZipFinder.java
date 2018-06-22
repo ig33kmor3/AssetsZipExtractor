@@ -6,14 +6,10 @@ import java.util.List;
 
 public class ZipFinder {
 
-    private List<File> listOfZips = new ArrayList<File>();
+    private List<File> recursiveZipSearchList = new ArrayList<File>();
 
-    public ZipFinder(){
-        this.listOfZips = null;
-    }
-
-    public List<File> getListOfZips() {
-        return listOfZips;
+    public List<File> getRecursiveZipSearchList() {
+        return this.recursiveZipSearchList;
     }
 
     public void searchDirectoryListing(File directory){
@@ -36,9 +32,12 @@ public class ZipFinder {
     private void checkForZipFileExtension(File file){
         String filename = file.getName();
         if(filename.toLowerCase().endsWith(".zip")){
-            listOfZips.add(file);
+            this.recursiveZipSearchList.add(file);
             System.out.println(filename + " " + "is a zip file!");
-
         }
+    }
+
+    public void resetZipList(){
+        this.recursiveZipSearchList.clear();
     }
 }

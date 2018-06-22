@@ -36,7 +36,7 @@ public class Controller {
     private File zipOutputRootDirectory;
     private File zipOutputUncompressedDirectory;
     private File zipOutputXMLDirectory;
-    private List<File> listOfZipFiles;
+    private List<File> zipFileList;
 
     @FXML
     public void initialize() {
@@ -90,7 +90,7 @@ public class Controller {
     public void onStartButtonClick(){
         if(this.zipFile != null && this.zipOutputRootDirectory != null){
             createOutputFolderTree(this.zipOutputRootDirectory);
-            Extractor.unZip(zipFile, zipOutputUncompressedDirectory);
+            startZipExtractionProcess();
         } else {
             notificationArea.setText("Please select an input and output!");
         }
@@ -103,5 +103,22 @@ public class Controller {
         this.zipOutputUncompressedDirectory.mkdirs();
         this.zipOutputXMLDirectory.mkdirs();
         notificationArea.setText("Finished initial folder tree creation.");
+    }
+
+    private void startZipExtractionProcess(){
+        ZipFinder zipSearch = new ZipFinder();
+        do{
+            Extractor.unZip(this.zipFile, this.zipOutputUncompressedDirectory);
+            zipSearch.searchDirectoryListing(this.zipOutputUncompressedDirectory);
+            this.zipFileList = zipSearch.getRecursiveZipSearchList();
+            while(this.zipFileList.size() > 0){
+                for (File zipFile:this.zipFileList){
+                    Extractor.unZip(zipFile, this.zipOutputUncompressedDirectory);
+                    zipFile.delete();
+                }
+                zipSearch.resetZipList();
+                zipSearch.searchDirectoryListing(this.zipOutputUncompressedDirectory);
+            }
+        } while(this.zipFileList.size() > 0);
     }
 }
