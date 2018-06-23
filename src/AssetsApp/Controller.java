@@ -1,6 +1,7 @@
 package AssetsApp;
 
 import AssetsApp.Extraction.Extractor;
+import AssetsApp.Search.XMLFinder;
 import AssetsApp.Search.ZipFinder;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,6 +38,7 @@ public class Controller {
     private File zipOutputUncompressedDirectory;
     private File zipOutputXMLDirectory;
     private List<File> zipFileList;
+    private List<File> xmlFileList;
 
     @FXML
     public void initialize() {
@@ -91,6 +93,7 @@ public class Controller {
         if(this.zipFile != null && this.zipOutputRootDirectory != null){
             createOutputFolderTree(this.zipOutputRootDirectory);
             startZipExtractionProcess();
+            searchDirectoriesForXML();
         } else {
             notificationArea.setText("Please select an input and output!");
         }
@@ -122,5 +125,11 @@ public class Controller {
                 zipSearch.searchDirectoryListing(this.zipOutputUncompressedDirectory);
             }
         } while(!this.zipFileList.isEmpty());
+    }
+
+    private void searchDirectoriesForXML(){
+        XMLFinder xmlSearch = new XMLFinder();
+        xmlSearch.searchDirectoryListing(this.zipOutputUncompressedDirectory);
+        this.xmlFileList = xmlSearch.getRecursiveXMLSearchList();
     }
 }
