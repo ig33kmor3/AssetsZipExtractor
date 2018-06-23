@@ -107,13 +107,15 @@ public class Controller {
 
     private void startZipExtractionProcess(){
         ZipFinder zipSearch = new ZipFinder();
+        File zipFileParentDirectory;
         do{
             Extractor.unZip(this.zipFile, this.zipOutputUncompressedDirectory);
             zipSearch.searchDirectoryListing(this.zipOutputUncompressedDirectory);
             this.zipFileList = zipSearch.getRecursiveZipSearchList();
             while(this.zipFileList.size() > 0){
                 for (File zipFile:this.zipFileList){
-                    Extractor.unZip(zipFile, this.zipOutputUncompressedDirectory);
+                    zipFileParentDirectory = new File(zipFile.getParent());
+                    Extractor.unZip(zipFile, zipFileParentDirectory);
                     zipFile.delete();
                 }
                 zipSearch.resetZipList();

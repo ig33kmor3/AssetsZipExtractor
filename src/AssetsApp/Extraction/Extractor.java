@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 public class Extractor {
 
@@ -24,16 +23,6 @@ public class Extractor {
                     if(!newDirectory.exists()){
                         newDirectory.mkdirs();
                     }
-//                } else if(zipEntry.getName().toLowerCase().endsWith(".zip")){
-////                    new File(newFile.getParent()).mkdirs();
-////                    ZipOutputStream zipOutput = new ZipOutputStream(new FileOutputStream(newFile));
-////                    zipOutput.putNextEntry(zipEntry);
-////                    int len;
-////                    while ((len = zipInput.read(buffer)) > 0){
-////                        zipOutput.write(buffer, 0, len);
-////                    }
-////                    zipOutput.close();
-//                    System.out.println("Discovered a Zip File: " + zipEntry.getName());
                 } else {
                     new File(newFile.getParent()).mkdirs();
                     FileOutputStream fileOutput = new FileOutputStream(newFile);

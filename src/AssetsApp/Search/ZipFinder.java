@@ -17,10 +17,8 @@ public class ZipFinder {
         try{
             for (File file : zipFileArray){
                 if(file.isDirectory()){
-                    System.out.println(file.getAbsolutePath());
                     searchDirectoryListing(file);
                 } else {
-                    System.out.println(file.getAbsolutePath());
                     checkForZipFileExtension(file);
                 }
             }
