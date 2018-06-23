@@ -1,9 +1,6 @@
 package AssetsApp.Extraction;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -12,7 +9,7 @@ public class Extractor {
     public static void unZip(File zipFile, File outputDirectory){
         try{
             byte[] buffer = new byte[4096];
-            ZipInputStream zipInput = new ZipInputStream(new FileInputStream(zipFile));
+            ZipInputStream zipInput = new ZipInputStream(new BufferedInputStream(new FileInputStream(zipFile)));
             ZipEntry zipEntry = zipInput.getNextEntry();
             while(zipEntry != null){
                 String zipName = zipEntry.getName();
@@ -25,12 +22,13 @@ public class Extractor {
                     }
                 } else {
                     new File(newFile.getParent()).mkdirs();
-                    FileOutputStream fileOutput = new FileOutputStream(newFile);
+                    BufferedOutputStream bufferedOutput = new BufferedOutputStream(new FileOutputStream(newFile));
+//                    FileOutputStream fileOutput = new FileOutputStream(newFile);
                     int len;
                     while ((len = zipInput.read(buffer)) > 0){
-                        fileOutput.write(buffer, 0, len);
+                        bufferedOutput.write(buffer, 0, len);
                     }
-                    fileOutput.close();
+                    bufferedOutput.close();
                 }
                 zipEntry = zipInput.getNextEntry();
             }

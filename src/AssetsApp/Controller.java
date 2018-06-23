@@ -112,7 +112,7 @@ public class Controller {
             Extractor.unZip(this.zipFile, this.zipOutputUncompressedDirectory);
             zipSearch.searchDirectoryListing(this.zipOutputUncompressedDirectory);
             this.zipFileList = zipSearch.getRecursiveZipSearchList();
-            while(this.zipFileList.size() > 0){
+            while(!this.zipFileList.isEmpty()){
                 for (File zipFile:this.zipFileList){
                     zipFileParentDirectory = new File(zipFile.getParent());
                     Extractor.unZip(zipFile, zipFileParentDirectory);
@@ -121,6 +121,6 @@ public class Controller {
                 zipSearch.resetZipList();
                 zipSearch.searchDirectoryListing(this.zipOutputUncompressedDirectory);
             }
-        } while(this.zipFileList.size() > 0);
+        } while(!this.zipFileList.isEmpty());
     }
 }
