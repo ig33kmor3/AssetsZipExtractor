@@ -11,8 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -48,9 +46,10 @@ public class Controller {
 
     @FXML
     public void initialize() {
+        this.notificationArea.setText("Select a zip file and extract location!");
         this.textFieldZipFolderLocation.setEditable(false);
         this.textFieldZipOutputLocation.setEditable(false);
-        this.notificationArea.setText("Select zip file and output location!");
+        this.btnClear.setDisable(true);
     }
 
     @FXML
@@ -64,7 +63,8 @@ public class Controller {
         } else if (btnClicked.getSource().equals(this.btnClear)) {
             this.textFieldZipFolderLocation.clear();
             this.textFieldZipOutputLocation.clear();
-            this.notificationArea.setText("Select zip file and output location!");
+            this.notificationArea.setText("Select a zip file and extract location!");
+            this.btnClear.setDisable(true);
         }
     }
 
@@ -96,6 +96,7 @@ public class Controller {
 
     private void checkForZipAndOutputLocation(){
         if(this.zipFile != null && this.zipOutputRootDirectory != null){
+            this.btnClear.setDisable(false);
             this.notificationArea.setText("Click Start Extraction to begin!");
         }
     }
@@ -108,19 +109,28 @@ public class Controller {
             searchDirectoriesForXMLFiles();
             copyXMLToZipOutputXMLDirectory();
         } else {
-            this.notificationArea.setText("Please select a zip file and output location!");
+            this.notificationArea.setText("Please select a zip file and extract location!");
         }
     }
 
     private void createOutputFolderTree(){
+        preventButtonInteraction();
         notificationArea.setText("Creating output directories!");
-        this.zipOutputUncompressedDirectory = new File(this.zipOutputRootDirectory.getAbsolutePath() + File.separator + "00_uncompressedZipContents");
-        this.zipOutputXMLDirectory = new File(this.zipOutputRootDirectory.getAbsolutePath() + File.separator + "01_xmlOutputContents");
+        this.zipOutputUncompressedDirectory = new File(this.zipOutputRootDirectory.getAbsolutePath() + File.separator + "uncompressedZipContents");
+        this.zipOutputXMLDirectory = new File(this.zipOutputRootDirectory.getAbsolutePath() + File.separator + "xmlOutputContents");
         this.zipOutputUncompressedDirectory.mkdirs();
         this.zipOutputXMLDirectory.mkdirs();
     }
 
+    private void preventButtonInteraction(){
+        this.btnZipFolderLocation.setDisable(true);
+        this.btnZipOutputLocation.setDisable(true);
+        this.btnStartExtraction.setDisable(true);
+        this.btnClear.setDisable(true);
+    }
+
     private void startZipExtractionProcess(){
+        preventButtonInteraction();
         this.notificationArea.setText("Take a break (don't exit). Extracting zip files ...");
         ZipFinder zipSearch = new ZipFinder();
         File zipFileParentDirectory;
@@ -141,6 +151,7 @@ public class Controller {
     }
 
     private void searchDirectoriesForXMLFiles(){
+        preventButtonInteraction();
         this.notificationArea.setText("Searching for XML files ...");
         XMLFinder xmlSearch = new XMLFinder();
         xmlSearch.searchDirectoryListing(this.zipOutputUncompressedDirectory);
@@ -148,6 +159,7 @@ public class Controller {
     }
 
     private void copyXMLToZipOutputXMLDirectory(){
+        preventButtonInteraction();
         if(this.xmlFileList.isEmpty()){
             System.out.println("There are no .xml files in the directory tree!");
             this.notificationArea.setText("There were no XML files located. Please close program!");
@@ -169,5 +181,13 @@ public class Controller {
             this.notificationArea.setText(numberOfXMLs + " extracted. Please close program!");
             this.xmlFileList.clear();
         }
+        enableButtonInteraction();
+    }
+
+    private void enableButtonInteraction(){
+        this.btnZipFolderLocation.setDisable(false);
+        this.btnZipOutputLocation.setDisable(false);
+        this.btnStartExtraction.setDisable(false);
+        this.btnClear.setDisable(false);
     }
 }

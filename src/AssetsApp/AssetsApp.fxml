@@ -8,13 +8,13 @@
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
 
     <!--Zip Folder Location UI-->
-    <Label text="Select .zip File" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+    <Label text="Select Zip File" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
     <TextField fx:id="textFieldZipFolderLocation" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="4"/>
     <Button fx:id="btnZipFolderLocation" text="Browse" GridPane.rowIndex="0" GridPane.columnIndex="5"
             onAction="#onBrowseOrClearButtonClick"/>
 
     <!--Zip Output Location UI-->
-    <Label text="Extraction Location" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+    <Label text="Extract Location" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
     <TextField fx:id="textFieldZipOutputLocation" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="4"/>
     <Button fx:id="btnZipOutputLocation" text="Browse" GridPane.rowIndex="2" GridPane.columnIndex="5"
             onAction="#onBrowseOrClearButtonClick"/>

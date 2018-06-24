@@ -1,6 +1,5 @@
 package AssetsApp.Extraction;
 
-import javafx.scene.control.TextArea;
 import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
