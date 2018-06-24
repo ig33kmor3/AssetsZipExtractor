@@ -169,7 +169,7 @@ public class Controller {
                 Path sourcePath = Paths.get(xmlFile.getAbsolutePath());
                 File destinationFile = new File(this.zipOutputXMLDirectory + File.separator + xmlFile.getName());
                 Path destinationPath = Paths.get(destinationFile.getAbsolutePath());
-                System.out.println("Copying " + xmlFile.getName() + " to xmlOutput directory.");
+                System.out.println("Copying: " + xmlFile.getName() + " to xmlOutput directory");
                 try{
                     Files.copy(sourcePath, destinationPath);
                 } catch(IOException message){
