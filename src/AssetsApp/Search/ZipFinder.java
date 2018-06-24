@@ -31,7 +31,6 @@ public class ZipFinder {
         String filename = file.getName();
         if(filename.toLowerCase().endsWith(".zip")){
             this.recursiveZipSearchList.add(file);
-            System.out.println(filename + " " + "is a .zip file!");
         }
     }
 

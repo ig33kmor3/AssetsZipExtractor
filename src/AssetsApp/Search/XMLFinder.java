@@ -31,11 +31,6 @@ public class XMLFinder {
         String filename = file.getName();
         if(filename.toLowerCase().endsWith(".xml")){
             this.recursiveXMLSearchList.add(file);
-            System.out.println(filename + " " + "is a .xml file!");
         }
-    }
-
-    public void resetXMLList(){
-        this.recursiveXMLSearchList.clear();
     }
 }

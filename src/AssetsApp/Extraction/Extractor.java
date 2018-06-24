@@ -1,12 +1,13 @@
 package AssetsApp.Extraction;
 
+import javafx.scene.control.TextArea;
 import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class Extractor {
 
-    public static void unZip(File zipFile, File outputDirectory){
+    public static void unZip(File zipFile, File outputDirectory, TextArea notificationArea){
         try{
             byte[] buffer = new byte[4096];
             ZipInputStream zipInput = new ZipInputStream(new BufferedInputStream(new FileInputStream(zipFile)));
@@ -15,6 +16,7 @@ public class Extractor {
                 String zipName = zipEntry.getName();
                 File newFile = new File(outputDirectory + File.separator + zipName);
                 System.out.println("File Unzip: " + newFile.getAbsolutePath());
+                notificationArea.appendText("File Unzip: " + newFile.getAbsolutePath() + "\n");
                 if(zipEntry.isDirectory()){
                     File newDirectory = new File(newFile.getAbsolutePath());
                     if(!newDirectory.exists()){
@@ -23,7 +25,6 @@ public class Extractor {
                 } else {
                     new File(newFile.getParent()).mkdirs();
                     BufferedOutputStream bufferedOutput = new BufferedOutputStream(new FileOutputStream(newFile));
-//                    FileOutputStream fileOutput = new FileOutputStream(newFile);
                     int len;
                     while ((len = zipInput.read(buffer)) > 0){
                         bufferedOutput.write(buffer, 0, len);

@@ -12,6 +12,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class Controller {
@@ -91,34 +95,34 @@ public class Controller {
     @FXML
     public void onStartButtonClick(){
         if(this.zipFile != null && this.zipOutputRootDirectory != null){
-            createOutputFolderTree(this.zipOutputRootDirectory);
+            createOutputFolderTree();
             startZipExtractionProcess();
-            searchDirectoriesForXML();
+            searchDirectoriesForXMLFiles();
+            copyXMLToZipOutputXMLDirectory();
         } else {
             notificationArea.setText("Please select an input and output!");
         }
     }
 
-    private void createOutputFolderTree(File zipOutputDirectory){
-        notificationArea.setText("Creating initial folder tree ....");
-        this.zipOutputUncompressedDirectory = new File(zipOutputDirectory.getAbsolutePath() + File.separator + "uncompressedZip");
-        this.zipOutputXMLDirectory = new File(zipOutputDirectory.getAbsolutePath() + File.separator + "xmlOutput");
+    private void createOutputFolderTree(){
+        this.zipOutputUncompressedDirectory = new File(this.zipOutputRootDirectory.getAbsolutePath() + File.separator + "00_uncompressedZipContents");
+        this.zipOutputXMLDirectory = new File(this.zipOutputRootDirectory.getAbsolutePath() + File.separator + "01_xmlOutputContents");
         this.zipOutputUncompressedDirectory.mkdirs();
         this.zipOutputXMLDirectory.mkdirs();
-        notificationArea.setText("Finished initial folder tree creation.");
+        notificationArea.setText("Finished initial folder tree creation. Press Start Extraction button.");
     }
 
     private void startZipExtractionProcess(){
         ZipFinder zipSearch = new ZipFinder();
         File zipFileParentDirectory;
         do{
-            Extractor.unZip(this.zipFile, this.zipOutputUncompressedDirectory);
+            Extractor.unZip(this.zipFile, this.zipOutputUncompressedDirectory, this.notificationArea);
             zipSearch.searchDirectoryListing(this.zipOutputUncompressedDirectory);
             this.zipFileList = zipSearch.getRecursiveZipSearchList();
             while(!this.zipFileList.isEmpty()){
                 for (File zipFile:this.zipFileList){
                     zipFileParentDirectory = new File(zipFile.getParent());
-                    Extractor.unZip(zipFile, zipFileParentDirectory);
+                    Extractor.unZip(zipFile, zipFileParentDirectory, this.notificationArea);
                     zipFile.delete();
                 }
                 zipSearch.resetZipList();
@@ -127,9 +131,29 @@ public class Controller {
         } while(!this.zipFileList.isEmpty());
     }
 
-    private void searchDirectoriesForXML(){
+    private void searchDirectoriesForXMLFiles(){
         XMLFinder xmlSearch = new XMLFinder();
         xmlSearch.searchDirectoryListing(this.zipOutputUncompressedDirectory);
         this.xmlFileList = xmlSearch.getRecursiveXMLSearchList();
+    }
+
+    private void copyXMLToZipOutputXMLDirectory(){
+        if(this.xmlFileList.isEmpty()){
+            System.out.println("There are no .xml files in the directory tree");
+        } else {
+            for (File xmlFile:this.xmlFileList){
+                Path sourcePath = Paths.get(xmlFile.getAbsolutePath());
+                File destinationFile = new File(this.zipOutputXMLDirectory + File.separator + xmlFile.getName());
+                Path destinationPath = Paths.get(destinationFile.getAbsolutePath());
+                System.out.println("Copying " + xmlFile.getName() + " to xmlOutput directory.");
+                this.notificationArea.appendText("Copying " + xmlFile.getName() + " to xmlOutput directory.\n");
+                try{
+                    Files.copy(sourcePath, destinationPath);
+                } catch(IOException message){
+                    message.getStackTrace();
+                }
+            }
+            this.xmlFileList.clear();
+        }
     }
 }
