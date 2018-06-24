@@ -7,7 +7,7 @@ import java.util.zip.ZipInputStream;
 
 public class Extractor {
 
-    public static void unZip(File zipFile, File outputDirectory, TextArea notificationArea){
+    public static void unZip(File zipFile, File outputDirectory){
         try{
             byte[] buffer = new byte[4096];
             ZipInputStream zipInput = new ZipInputStream(new BufferedInputStream(new FileInputStream(zipFile)));
@@ -16,7 +16,6 @@ public class Extractor {
                 String zipName = zipEntry.getName();
                 File newFile = new File(outputDirectory + File.separator + zipName);
                 System.out.println("File Unzip: " + newFile.getAbsolutePath());
-                notificationArea.appendText("File Unzip: " + newFile.getAbsolutePath() + "\n");
                 if(zipEntry.isDirectory()){
                     File newDirectory = new File(newFile.getAbsolutePath());
                     if(!newDirectory.exists()){

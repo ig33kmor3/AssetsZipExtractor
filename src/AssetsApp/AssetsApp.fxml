@@ -8,26 +8,25 @@
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
 
     <!--Zip Folder Location UI-->
-    <Label text="Zip Folder Input Location" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-    <TextField fx:id="textFieldZipFolderLocation" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
-    <Button fx:id="btnZipFolderLocation" text="Browse" GridPane.rowIndex="0" GridPane.columnIndex="4"
-            onAction="#onBrowseButtonClick"/>
+    <Label text="Select .zip File" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+    <TextField fx:id="textFieldZipFolderLocation" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="4"/>
+    <Button fx:id="btnZipFolderLocation" text="Browse" GridPane.rowIndex="0" GridPane.columnIndex="5"
+            onAction="#onBrowseOrClearButtonClick"/>
 
     <!--Zip Output Location UI-->
-    <Label text="Zip Entries Output Location" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-    <TextField fx:id="textFieldZipOutputLocation" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
-    <Button fx:id="btnZipOutputLocation" text="Browse" GridPane.rowIndex="2" GridPane.columnIndex="4"
-            onAction="#onBrowseButtonClick"/>
+    <Label text="Extraction Location" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+    <TextField fx:id="textFieldZipOutputLocation" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="4"/>
+    <Button fx:id="btnZipOutputLocation" text="Browse" GridPane.rowIndex="2" GridPane.columnIndex="5"
+            onAction="#onBrowseOrClearButtonClick"/>
 
-    <!--Execute Extraction Button UI-->
-    <Button fx:id="btnStartExtraction" text="Start Extraction" GridPane.rowIndex="4" GridPane.columnIndex="2" GridPane.columnSpan="3"
+    <!--Execute Extraction and Clear Button UI-->
+    <Button fx:id="btnStartExtraction" text="Start Extraction" GridPane.rowIndex="4" GridPane.columnIndex="1" GridPane.columnSpan="2"
             onAction="#onStartButtonClick"/>
+    <Button fx:id="btnClear" text="Clear" GridPane.rowIndex="4" GridPane.columnIndex="3"
+            onAction="#onBrowseOrClearButtonClick"/>
 
     <!--User Notification Area-->
-    <TextArea fx:id="notificationArea" GridPane.rowIndex="7" GridPane.columnIndex="0"
-              GridPane.columnSpan="5" wrapText="true" style="-fx-text-alignment: center;"/>
-    <Label text="Notification Area" GridPane.rowIndex="8" GridPane.columnIndex="2"/>
-    <Button fx:id="btnClear" text="Clear" GridPane.rowIndex="10" GridPane.columnIndex="2" GridPane.halignment="CENTER"
-            onAction="#onBrowseButtonClick"/>
+    <Label fx:id="notificationArea" GridPane.rowIndex="8" GridPane.columnIndex="0"
+              GridPane.columnSpan="6" style="-fx-text-alignment: center;" GridPane.halignment="CENTER"/>
 
 </GridPane>
