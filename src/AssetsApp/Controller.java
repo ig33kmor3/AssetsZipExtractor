@@ -52,6 +52,7 @@ public class Controller {
         this.notificationArea.setText("Select a zip file and extract location!");
         this.textFieldZipFolderLocation.setEditable(false);
         this.textFieldZipOutputLocation.setEditable(false);
+        this.btnStartExtraction.setDisable(true);
         this.btnClear.setDisable(true);
     }
 
@@ -66,8 +67,9 @@ public class Controller {
         } else if (btnClicked.getSource().equals(this.btnClear)) {
             this.textFieldZipFolderLocation.clear();
             this.textFieldZipOutputLocation.clear();
-            this.notificationArea.setText("Select a zip file and extract location!");
             this.btnClear.setDisable(true);
+            this.btnStartExtraction.setDisable(true);
+            this.notificationArea.setText("Select a zip file and extract location!");
         }
     }
 
@@ -100,6 +102,7 @@ public class Controller {
     private void checkForZipAndOutputLocation(){
         if(this.zipFile != null && this.zipOutputRootDirectory != null){
             this.btnClear.setDisable(false);
+            this.btnStartExtraction.setDisable(false);
             this.notificationArea.setText("Click Start Extraction to begin!");
         }
     }
