@@ -3,6 +3,7 @@ package AssetsApp;
 import AssetsApp.Extraction.Extractor;
 import AssetsApp.Search.XMLFinder;
 import AssetsApp.Search.ZipFinder;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -106,10 +107,13 @@ public class Controller {
     @FXML
     public void onStartButtonClick(){
         if(this.zipFile != null && this.zipOutputRootDirectory != null){
-            createOutputFolderTree();
-            startZipExtractionProcess();
-            searchDirectoriesForXMLFiles();
-            copyXMLToZipOutputXMLDirectory();
+            Runnable startExtraction = () -> {
+                createOutputFolderTree();
+                startZipExtractionProcess();
+                searchDirectoriesForXMLFiles();
+                copyXMLToZipOutputXMLDirectory();
+            };
+            new Thread(startExtraction).start();
         } else {
             this.notificationArea.setText("Please select a zip file and extract location!");
         }
@@ -117,7 +121,9 @@ public class Controller {
 
     private void createOutputFolderTree(){
         preventButtonInteraction();
-        notificationArea.setText("Creating output directories!");
+        Platform.runLater(()->{
+            this.notificationArea.setText("Take a break (don't exit). Extracting zip files ...");
+        });
         this.zipOutputUncompressedDirectory = new File(this.zipOutputRootDirectory.getAbsolutePath() + File.separator + "uncompressedZipContents");
         this.zipOutputXMLDirectory = new File(this.zipOutputRootDirectory.getAbsolutePath() + File.separator + "xmlOutputContents");
         this.zipOutputUncompressedDirectory.mkdirs();
@@ -125,15 +131,16 @@ public class Controller {
     }
 
     private void preventButtonInteraction(){
-        this.btnZipFolderLocation.setDisable(true);
-        this.btnZipOutputLocation.setDisable(true);
-        this.btnStartExtraction.setDisable(true);
-        this.btnClear.setDisable(true);
+        Platform.runLater(()->{
+            this.btnZipFolderLocation.setDisable(true);
+            this.btnZipOutputLocation.setDisable(true);
+            this.btnStartExtraction.setDisable(true);
+            this.btnClear.setDisable(true);
+        });
     }
 
     private void startZipExtractionProcess(){
         preventButtonInteraction();
-        this.notificationArea.setText("Take a break (don't exit). Extracting zip files ...");
         ZipFinder zipSearch = new ZipFinder();
         File zipFileParentDirectory;
         do{
@@ -154,7 +161,6 @@ public class Controller {
 
     private void searchDirectoriesForXMLFiles(){
         preventButtonInteraction();
-        this.notificationArea.setText("Searching for XML files ...");
         XMLFinder xmlSearch = new XMLFinder();
         xmlSearch.searchDirectoryListing(this.zipOutputUncompressedDirectory);
         this.xmlFileList = xmlSearch.getRecursiveXMLSearchList();
@@ -164,9 +170,10 @@ public class Controller {
         preventButtonInteraction();
         if(this.xmlFileList.isEmpty()){
             System.out.println("There are no .xml files in the directory tree!");
-            this.notificationArea.setText("There were no XML files located. Please close program!");
+            Platform.runLater(()->{
+                this.notificationArea.setText("There were no XML files located. Please close program!");
+            });
         } else {
-            this.notificationArea.setText("Moving XML files to " + this.zipOutputRootDirectory + File.separator + this.zipOutputXMLDirectory);
             for (File xmlFile:this.xmlFileList){
                 Path sourcePath = Paths.get(xmlFile.getAbsolutePath());
                 File destinationFile = new File(this.zipOutputXMLDirectory + File.separator + xmlFile.getName());
@@ -180,16 +187,20 @@ public class Controller {
             }
             int number = this.xmlFileList.size();
             String numberOfXMLs = Integer.toString(number);
-            this.notificationArea.setText(numberOfXMLs + " extracted. Please close program!");
+            Platform.runLater(()->{
+                this.notificationArea.setText(numberOfXMLs + " extracted. Please close program!");
+            });
             this.xmlFileList.clear();
         }
         enableButtonInteraction();
     }
 
     private void enableButtonInteraction(){
-        this.btnZipFolderLocation.setDisable(false);
-        this.btnZipOutputLocation.setDisable(false);
-        this.btnStartExtraction.setDisable(false);
-        this.btnClear.setDisable(false);
+        Platform.runLater(()->{
+            this.btnZipFolderLocation.setDisable(false);
+            this.btnZipOutputLocation.setDisable(false);
+            this.btnStartExtraction.setDisable(false);
+            this.btnClear.setDisable(false);
+        });
     }
 }
