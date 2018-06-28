@@ -138,7 +138,7 @@ public class Controller {
     private void createOutputFolderTree(){
         preventButtonInteraction();
         Platform.runLater(()->{
-            this.notificationArea.setText("Take a break (don't exit). Extracting zip files ... Be back soon!");
+            this.notificationArea.setText("Take a break. Performing operation!");
         });
         this.zipOutputUncompressedDirectory = new File(this.zipOutputRootDirectory.getAbsolutePath() + File.separator + "uncompressedZipContents");
         this.zipOutputXMLDirectory = new File(this.zipOutputRootDirectory.getAbsolutePath() + File.separator + "xmlOutputContents");
@@ -205,7 +205,7 @@ public class Controller {
             int number = this.xmlFileList.size();
             String numberOfXMLs = Integer.toString(number);
             Platform.runLater(()->{
-                this.notificationArea.setText(numberOfXMLs + " XMLs extracted. Feel free to close the program!");
+                this.notificationArea.setText(numberOfXMLs + " XMLs extracted!");
                 stopProgressIndication();
             });
             this.xmlFileList.clear();
