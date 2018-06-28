@@ -69,6 +69,8 @@ public class Controller {
             this.zipOutputRootDirectory = getZipOutputDirectoryDialog();
             checkForZipAndOutputLocation();
         } else if (btnClicked.getSource().equals(this.btnClear)) {
+            this.btnZipFolderLocation.setDisable(false);
+            this.btnZipOutputLocation.setDisable(false);
             this.textFieldZipFolderLocation.clear();
             this.textFieldZipOutputLocation.clear();
             this.btnClear.setDisable(true);
@@ -210,7 +212,7 @@ public class Controller {
             });
             this.xmlFileList.clear();
         }
-        enableClearButtonInteraction();
+        enableButtonInteraction();
     }
 
     private void stopProgressIndication(){
@@ -219,7 +221,7 @@ public class Controller {
         });
     }
 
-    private void enableClearButtonInteraction(){
+    private void enableButtonInteraction(){
         Platform.runLater(()->{
             this.btnClear.setDisable(false);
         });
