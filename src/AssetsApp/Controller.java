@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
@@ -39,6 +40,8 @@ public class Controller {
     private Button btnClear;
     @FXML
     private Label notificationArea;
+    @FXML
+    private ProgressIndicator progressIndicator;
 
     private File zipFile;
     private File zipOutputRootDirectory;
@@ -50,6 +53,7 @@ public class Controller {
     @FXML
     public void initialize() {
         this.notificationArea.setText("Select a zip file and extract location!");
+        this.progressIndicator.setVisible(false);
         this.textFieldZipFolderLocation.setEditable(false);
         this.textFieldZipOutputLocation.setEditable(false);
         this.btnStartExtraction.setDisable(true);
@@ -70,6 +74,7 @@ public class Controller {
             this.btnClear.setDisable(true);
             this.btnStartExtraction.setDisable(true);
             this.notificationArea.setText("Select a zip file and extract location!");
+            this.progressIndicator.setVisible(false);
         }
     }
 
@@ -111,6 +116,7 @@ public class Controller {
     public void onStartButtonClick(){
         if(this.zipFile != null && this.zipOutputRootDirectory != null){
             Runnable startExtraction = () -> {
+                startProgressIndication();
                 createOutputFolderTree();
                 startZipExtractionProcess();
                 searchDirectoriesForXMLFiles();
@@ -120,6 +126,13 @@ public class Controller {
         } else {
             this.notificationArea.setText("Please select a zip file and extract location!");
         }
+    }
+
+    private void startProgressIndication(){
+        Platform.runLater(()->{
+            this.progressIndicator.setVisible(true);
+            this.progressIndicator.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+        });
     }
 
     private void createOutputFolderTree(){
@@ -175,6 +188,7 @@ public class Controller {
             System.out.println("There are no .xml files in the directory tree!");
             Platform.runLater(()->{
                 this.notificationArea.setText("There were no XML files located. Please close program!");
+                stopProgressIndication();
             });
         } else {
             for (File xmlFile:this.xmlFileList){
@@ -192,17 +206,21 @@ public class Controller {
             String numberOfXMLs = Integer.toString(number);
             Platform.runLater(()->{
                 this.notificationArea.setText(numberOfXMLs + " XMLs extracted. Feel free to close the program!");
+                stopProgressIndication();
             });
             this.xmlFileList.clear();
         }
-        enableButtonInteraction();
+        enableClearButtonInteraction();
     }
 
-    private void enableButtonInteraction(){
+    private void stopProgressIndication(){
         Platform.runLater(()->{
-            this.btnZipFolderLocation.setDisable(false);
-            this.btnZipOutputLocation.setDisable(false);
-            this.btnStartExtraction.setDisable(false);
+            this.progressIndicator.setProgress(1.0f);
+        });
+    }
+
+    private void enableClearButtonInteraction(){
+        Platform.runLater(()->{
             this.btnClear.setDisable(false);
         });
     }
