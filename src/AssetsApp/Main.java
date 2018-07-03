@@ -11,7 +11,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("AssetsApp.fxml"));
-        primaryStage.setTitle("ASSETS Zip Extractor (AZE) - v1.0");
+        primaryStage.setTitle("ASSETS Zip Extractor (AZE) - v1.01");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
     }
