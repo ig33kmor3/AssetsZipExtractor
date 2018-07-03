@@ -18,9 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Controller {
 
@@ -48,7 +46,7 @@ public class Controller {
     private File zipOutputUncompressedDirectory;
     private File zipOutputXMLDirectory;
     private List<File> zipFileList = Collections.synchronizedList(new ArrayList<>());
-    private List<File> xmlFileList = Collections.synchronizedList(new ArrayList<>());
+    private Set<File> xmlFileList = Collections.synchronizedSet(new HashSet<>());
 
     @FXML
     public void initialize() {
