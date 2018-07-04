@@ -1,15 +1,13 @@
 package AssetsApp.Search;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class XMLFinder {
 
-    private List<File> recursiveXMLSearchList = new ArrayList<File>();
-    private HashSet<File> recursiveXMLSearchSet;
+    private List<File> recursiveXMLSearchList = new ArrayList<>();
+    private Map<String, File> xmlMap = new HashMap<>();
+    private HashSet<File> recursiveXMLSearchSet = new HashSet<>();
 
     public Set<File> getRecursiveXMLSearchList() {
         return this.recursiveXMLSearchSet;
@@ -28,13 +26,29 @@ public class XMLFinder {
         } catch(NullPointerException message){
             message.getStackTrace();
         }
-        this.recursiveXMLSearchSet =  new HashSet<>(this.recursiveXMLSearchList);
+        eliminateXMLDuplication();
     }
 
     private void checkForXMLFileExtension(File file){
         String filename = file.getName();
         if(filename.toLowerCase().endsWith(".xml")){
             this.recursiveXMLSearchList.add(file);
+        }
+    }
+
+    private void eliminateXMLDuplication(){
+        for(File listFile : this.recursiveXMLSearchList){
+            if(!this.xmlMap.containsKey(listFile.getName())){
+                this.xmlMap.put(listFile.getName(), listFile);
+            }
+        }
+        createSet();
+    }
+
+    private void createSet(){
+        for(String key : this.xmlMap.keySet()){
+            File setFile = this.xmlMap.get(key);
+            this.recursiveXMLSearchSet.add(setFile);
         }
     }
 }
