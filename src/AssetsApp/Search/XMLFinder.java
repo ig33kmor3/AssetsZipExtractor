@@ -5,8 +5,7 @@ import java.util.*;
 
 public class XMLFinder {
 
-    private List<File> recursiveXMLSearchList = new ArrayList<>();
-    private Map<String, File> xmlMap = new HashMap<>();
+    private Map<String, File> recursiveXMLMap = new HashMap<>();
     private HashSet<File> recursiveXMLSearchSet = new HashSet<>();
 
     public Set<File> getRecursiveXMLSearchList() {
@@ -23,31 +22,21 @@ public class XMLFinder {
                     checkForXMLFileExtension(file);
                 }
             }
+            createXMLSearchSet();
         } catch(NullPointerException message){
             message.getStackTrace();
         }
-        eliminateXMLDuplication();
     }
 
     private void checkForXMLFileExtension(File file){
-        String filename = file.getName();
-        if(filename.toLowerCase().endsWith(".xml")){
-            this.recursiveXMLSearchList.add(file);
+        if(file.getName().toLowerCase().endsWith(".xml") && !this.recursiveXMLMap.containsKey(file.getName())){
+            this.recursiveXMLMap.put(file.getName(), file);
         }
     }
 
-    private void eliminateXMLDuplication(){
-        for(File listFile : this.recursiveXMLSearchList){
-            if(!this.xmlMap.containsKey(listFile.getName())){
-                this.xmlMap.put(listFile.getName(), listFile);
-            }
-        }
-        createSet();
-    }
-
-    private void createSet(){
-        for(String key : this.xmlMap.keySet()){
-            File setFile = this.xmlMap.get(key);
+    private void createXMLSearchSet(){
+        for(String key : this.recursiveXMLMap.keySet()){
+            File setFile = this.recursiveXMLMap.get(key);
             this.recursiveXMLSearchSet.add(setFile);
         }
     }
